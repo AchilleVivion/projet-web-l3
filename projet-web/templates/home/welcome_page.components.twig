@@ -1,0 +1,49 @@
+{% macro navbar() %}
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="/">PJW</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-expanded="false" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Communities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Events</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form> 
+        </div>
+    </nav>
+{% endmacro %}
+
+{% macro showNextEvent(nextEvent) %}
+    {% if nextEvent %}
+        <div class="border border-primary h-75">
+            <h2 class="text-center">{{ nextEvent['titre'] }}</h2>
+            <ul>
+                <li>{{ nextEvent['date'] }}</li>
+                <li>{{ nextEvent['desc'] }}</li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="border border-primary h-75 d-flex justify-content-center align-items-center">
+            <h3>No events programmed</h3>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro showCommuFlow(commuFlow) %}
+    {% if commuFlow %}
+        {# TODO #}
+    {% else %}
+        <div class="border border-primary h-75 d-flex justify-content-center align-items-center">
+            <h3>No communities followed</h3>
+        </div>
+    {% endif %}
+{% endmacro %}
