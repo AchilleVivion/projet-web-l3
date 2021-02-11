@@ -1,7 +1,7 @@
-<div class="row justify-content-center align-items-center h-100"> 
+<div class="row justify-content-center align-items-center h-75"> 
     <div class="col-8">
         <h1 class="text-center"><b>{% trans %}Log In {% endtrans %}</b></h1>
-        <form action="/login" method="POST">
+        <form action="/{{app.request.locale}}/login" method="POST">
             <div class="form-group">
                 <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="{% trans %}Enter pseudo{% endtrans %}"/>
             </div>
@@ -9,7 +9,7 @@
                 <input type="password" class="form-control" id="password" name="password" placeholder="{% trans %}Enter password{% endtrans %}"/>
             </div>
             <input type="submit" class="btn btn-primary" id="login" name="login" value="{% trans %}Log In{% endtrans %}"/>
-            <input type="submit" class="btn btn-default" id="signup" name="signup" value="{% trans %}Sign Up{% endtrans %}"/>
+            <a class="btn btn-default" href="">{% trans %}Sign Up{% endtrans %}<a/>
         </form>
     </div>
 </div>

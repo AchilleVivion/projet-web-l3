@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% import 'navbar/navbar.twig' as nav  %}
+{% import 'nav_barre/navbar.twig' as nav  %}
 
 {% block stylesheets %}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -13,11 +13,11 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 {% endblock %}
 
-{% block title %}My Communities{% endblock %}
+{% block title %}{% trans %}My Communities{% endtrans %}{% endblock %}
 
 {% block body %}
 <div class="container h-100">
-    {{ nav.navbar(nav_theme) }}
+    {{ nav.navbar(nav_theme, nav_settings) }}
 
     <h1>TO DO</h1>
 </div>
