@@ -1,0 +1,49 @@
+{% macro navbar(nav_theme = "navbar-light", nav_settings = []) %}
+    {% import 'nav_barre/navbar.components.twig' as nav_components %}
+    <nav class="navbar navbar-expand-lg {{nav_theme}}">
+        <a class="navbar-brand mr-auto" href="">PJW</a>
+        {% if app.session.get('token') %}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#subMenus" aria-expanded="false" aria-controls="subMenus" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="subMenus">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/{{app.request.locale}}/my/communities">{% trans %}My Communities{% endtrans %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/{{app.request.locale}}/public/communities">{% trans %}Public Communities{% endtrans %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/{{app.request.locale}}/public/events">{% trans %}Public Events{% endtrans %}</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="{% trans %}Search{% endtrans %}" aria-label="Search">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </span>
+                    </button>
+                </form>
+                <div class="my-2 my-lg-0">
+                    {{ nav_components.parameters(nav_settings) }}
+                    <a class="btn my-2 my-sm-0" href="/{{app.request.locale}}/logout">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                                <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="my-2 my-lg-0">
+                {{ nav_components.parameters(nav_settings) }}
+            </div>
+        {% endif %}
+    </nav>
+{% endmacro %}
