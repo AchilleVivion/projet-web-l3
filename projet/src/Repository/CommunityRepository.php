@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Community;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,32 +20,57 @@ class CommunityRepository extends ServiceEntityRepository
         parent::__construct($registry, Community::class);
     }
 
-    // /**
-    //  * @return Community[] Returns an array of Community objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return Community[] Returns an array of Community objects
+    */
+    public function findCommuOrganise(User $value)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+            ->innerJoin('c.organises', 'o')
+            ->andWhere('o.theuser = :val')
             ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Community
+    /**
+    * @return Community[] Returns an array of Community objects
+    */
+    public function findCommuFollow(User $value)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+            ->innerJoin('c.followedby', 'f')
+            ->andWhere('f.theuser = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+    * @return Community[] Returns an array of Community objects
+    */
+    public function findCommuPublic()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.public = :val')
+            ->setParameter('val', true)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Community
+     */
+    public function findOneById($value): ?Community
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

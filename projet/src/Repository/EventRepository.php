@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Security\LoginAuthenticator;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +23,86 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-    // /**
-    //  * @return Event[] Returns an array of Event objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return Event[] Returns an array of Event objects
+    */
+    public function findUpcomingEventUser(User $value, $filtres)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
+        $ret = $this->createQueryBuilder('e')
+        ->andWhere(':val MEMBER OF e.participants')
+        ->setParameter('val', $value);
+        if($filtres['minPrice'] != 0){
+            $ret->andWhere('e.prix >= :min')
+            ->setParameter('min', $filtres['minPrice']);
+        }
+        if($filtres['maxPrice'] != 0){
+            var_dump('ok');
+            $ret->andWhere('e.prix <= :max')
+            ->setParameter('max', $filtres['maxPrice']);
+        }
+        if($filtres['date'] != ""){
+            $ret->andWhere('e.date = :dat')
+            ->setParameter('dat', $filtres['date']);
+        }
+        return $ret->orderBy('e.date', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Event
+    /**
+    * @return Event[] Returns an array of Event objects
+    */
+    public function findUpcomingEvent($filtres)
+    {
+        $ret = $this->createQueryBuilder('e')
+        ->innerJoin('e.communities', 'c')
+        ->andWhere('c.public = true');
+        if($filtres['minPrice'] != 0){
+            $ret->andWhere('e.prix >= :min')
+            ->setParameter('min', $filtres['minPrice']);
+        }
+        if($filtres['maxPrice'] != 0){
+            var_dump('ok');
+            $ret->andWhere('e.prix <= :max')
+            ->setParameter('max', $filtres['maxPrice']);
+        }
+        if($filtres['date'] != ""){
+            $ret->andWhere('e.date = :dat')
+            ->setParameter('dat', $filtres['date']);
+        }
+        return $ret->orderBy('e.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Event
+     */
+    public function findOneById($value): ?Event
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->andWhere('e.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
+    /**
+     * @return Event
+     */
+    public function isParticipating(User $user, Event $event): ?Event
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.id = :event')
+            ->andWhere(':user MEMBER OF e.participants')
+            ->setParameter('event', $event)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    
 }

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper text-center">
+    <h1>{{'hello'|trans}} {{app.user.pseudo}} !</h1>
+    <img src="https://media.giphy.com/media/bcKmIWkUMCjVm/giphy.gif" className="img-fluid" alt="Welcome gif"></img>
+    <br><br><br>
+    <div class="row">
+        <div class="col-sm-12 col-md-4">
+            <a href="{{ path('event_index') }}" class="btn btn-default">{{'event.see'|trans}}</a>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <a href="{{ path('community_index') }}" class="btn btn-default">{{'community.see'|trans}}</a>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <a href="{{ path('community_new') }}" class="btn btn-default">{{'community.create'|trans}}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

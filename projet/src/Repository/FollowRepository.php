@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Follow;
+use App\Entity\User;
+use App\Entity\Community;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +49,16 @@ class FollowRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function isFollowing(User $user, Community $commu): ?Follow
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.theuser = :user')
+            ->andWhere('f.community = :commu')
+            ->setParameter('user', $user)
+            ->setParameter('commu', $commu)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

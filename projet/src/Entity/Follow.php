@@ -18,12 +18,12 @@ class Follow
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Community::class, inversedBy="followedby")
+     * @ORM\ManyToOne(targetEntity=Community::class, inversedBy="followedby", cascade={"persist"})
      */
     private $community;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="follows")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="follows", cascade={"persist"})
      */
     private $theuser;
 

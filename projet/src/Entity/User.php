@@ -3,15 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="`user`")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -21,22 +21,18 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $name;
+    private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
      */
-    private $firstname;
+    private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mail;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
     private $password;
 
@@ -45,87 +41,58 @@ class User
      */
     private $pseudo;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $picture;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $theme;
-
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $lang;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Organise::class, mappedBy="theuser")
-     */
-    private $organiser;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Follow::class, mappedBy="theuser")
-     */
-    private $follows;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="participants")
-     */
-    private $events;
-
-    public function __construct()
-    {
-        $this->organiser = new ArrayCollection();
-        $this->follows = new ArrayCollection();
-        $this->events = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getEmail(): ?string
     {
-        return $this->name;
+        return $this->email;
     }
 
-    public function setName(string $name): self
+    public function setEmail(string $email): self
     {
-        $this->name = $name;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getFirstname(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->firstname;
+        return (string) $this->email;
     }
 
-    public function setFirstname(string $firstname): self
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        $this->firstname = $firstname;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function getMail(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
     {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): self
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -133,6 +100,26 @@ class User
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getPseudo(): ?string
@@ -143,129 +130,6 @@ class User
     public function setPseudo(string $pseudo): self
     {
         $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    public function getTheme(): ?bool
-    {
-        return $this->theme;
-    }
-
-    public function setTheme(bool $theme): self
-    {
-        $this->theme = $theme;
-
-        return $this;
-    }
-
-    public function getLang(): ?string
-    {
-        return $this->lang;
-    }
-
-    public function setLang(string $lang): self
-    {
-        $this->lang = $lang;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Organise[]
-     */
-    public function getOrganiser(): Collection
-    {
-        return $this->organiser;
-    }
-
-    public function addOrganiser(Organise $organiser): self
-    {
-        if (!$this->organiser->contains($organiser)) {
-            $this->organiser[] = $organiser;
-            $organiser->setTheuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrganiser(Organise $organiser): self
-    {
-        if ($this->organiser->removeElement($organiser)) {
-            // set the owning side to null (unless already changed)
-            if ($organiser->getTheuser() === $this) {
-                $organiser->setTheuser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Follow[]
-     */
-    public function getFollows(): Collection
-    {
-        return $this->follows;
-    }
-
-    public function addFollow(Follow $follow): self
-    {
-        if (!$this->follows->contains($follow)) {
-            $this->follows[] = $follow;
-            $follow->setTheuser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFollow(Follow $follow): self
-    {
-        if ($this->follows->removeElement($follow)) {
-            // set the owning side to null (unless already changed)
-            if ($follow->getTheuser() === $this) {
-                $follow->setTheuser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Event[]
-     */
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Event $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->addParticipant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvent(Event $event): self
-    {
-        if ($this->events->removeElement($event)) {
-            $event->removeParticipant($this);
-        }
 
         return $this;
     }

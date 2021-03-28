@@ -18,12 +18,12 @@ class Organise
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Community::class, inversedBy="organises")
+     * @ORM\ManyToOne(targetEntity=Community::class, inversedBy="organises", cascade={"persist"})
      */
     private $community;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organiser")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organiser", cascade={"persist"})
      */
     private $theuser;
 

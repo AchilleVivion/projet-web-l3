@@ -25,11 +25,6 @@ class Community
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $logo;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -40,17 +35,17 @@ class Community
     private $public;
 
     /**
-     * @ORM\OneToMany(targetEntity=Organise::class, mappedBy="community")
+     * @ORM\OneToMany(targetEntity=Organise::class, mappedBy="community", cascade={"persist"})
      */
     private $organises;
 
     /**
-     * @ORM\OneToMany(targetEntity=Follow::class, mappedBy="community")
+     * @ORM\OneToMany(targetEntity=Follow::class, mappedBy="community", cascade={"persist"})
      */
     private $followedby;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="communities")
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="communities", cascade={"persist"})
      */
     private $events;
 
@@ -74,18 +69,6 @@ class Community
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getLogo(): ?string
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(string $logo): self
-    {
-        $this->logo = $logo;
 
         return $this;
     }
