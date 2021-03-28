@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-2">
+            <h2>{{'filters'|trans}}</h2>
+            <form action="" method="POST" class="form-group">
+                <label>{{'price.min'|trans}}</label><br>
+                <input class="form-control" type="text" name="minPrice" placeholder="0" />
+                <label>{{'price.max'|trans}}</label><br>
+                <input class="form-control" type="text" name="maxPrice" placeholder="0" />
+                <label>Date</label><br>
+                <input class="form-control" type="date" name="date" />
+                <input class="form-control" type="submit" value="{{'search'|trans}}" />
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <h1>{{'event.participate'|trans}}</h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{'title'|trans}}</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for event in upcomingEventsUser %}
+                    <tr>
+                        <td>{{ event.titre }}</td>
+                        <td>{{ event.type }}</td>
+                        <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>    
+                        <td>
+                            <a href="{{ path('event_show', {'id': event.id}) }}"><span class="glyphicon glyphicon-eye-open"></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7"{{'no.record'|trans}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <h1>{{'event.public'|trans}}<br><br></h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{'title'|trans}}</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>{{'price'|trans}}</th>                      
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for event in upcomingEvents %}
+                    <tr>
+                        <td>{{ event.titre }}</td>
+                        <td>{{ event.type }}</td>
+                        <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+                        <td>{{ event.prix }}</td>    
+                        <td>
+                            <a href="{{ path('event_show', {'id': event.id}) }}"><span class="glyphicon glyphicon-eye-open"></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">{{'no.record'|trans}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'community.edit'|trans}}{% endblock %}
+
+{% block body %}
+    <h1>{{'community.edit'|trans}}</h1>
+
+    {{ include('community/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <div class="row">
+        <div class="col-sm-4">
+            <a class="btn btn-default" href="{{ path('community_index') }}">{{'back'|trans}}</a>
+        </div>
+        <div class="col-sm-4">
+            {{ include('community/_delete_form.html.twig') }}
+        </div>
+        <div class="col-sm-4">
+            <a class="btn btn-default" href="{{ path('event_new') ~ '?id_commu=' ~ community.id }}">{{'event.new'|trans}}</a>
+        </div>
+    </div>
+
+    <h2>{{'event'|trans}}</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{'title'|trans}}</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>{{'price'|trans}}</th>                      
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for event in community.events %}
+                <tr>
+                    <td>{{ event.titre }}</td>
+                    <td>{{ event.type }}</td>
+                    <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+                    <td>{{ event.prix }}</td>    
+                    <td>
+                        <a href="{{ path('event_show', {'id': event.id}) }}"><span class="glyphicon glyphicon-eye-open"></a>
+                        <a href="{{ path('event_edit', {'id': event.id}) ~ '?id_commu=' ~ community.id }}"><span class="glyphicon glyphicon-edit"></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">{{'no.record'|trans}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

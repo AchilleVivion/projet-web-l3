@@ -1,0 +1,37 @@
+stage.offir: __stage.offir
+hello: Bonjour
+event.see: 'Voir les évènements'
+community.see: 'Voir les communautés'
+community.create: 'Créer une communauté'
+comment.add: 'Ajouter un commentaire'
+delete: Supprimer
+comment.edit: 'Modifier commentaire'
+back: Retour
+price: Prix
+no.comments: 'Aucun commentaire'
+event.edit: 'Modifier évènement'
+event.new: 'Créer un évènement'
+event.participate: 'Evènement auxquels vous participez'
+title: titre
+no.record: 'Aucune données renseignées'
+event.public: 'Evènements publiques'
+follow: Suivre
+public: Publique
+community.edit: 'Modifier communauté'
+community.new: 'Créer une communauté'
+community.orga: 'Communautés que vous organisez'
+name: Nom
+community.follow: 'Communautés que vous suivez'
+community.public: 'Communautés publiques'
+signin: 'Se connecter'
+password: 'Mot de passe'
+signup: 'S''inscrire'
+community: Communauté
+event: Evènement
+participe: Participer
+filters: Filtres
+price.min: 'Prix min.'
+price.max: 'Prix max.'
+search: Chercher
+register: 'S''inscrire'
+agree: Accepter les termes

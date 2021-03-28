@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Community{% endblock %}
+
+{% block body %}
+    <h1>{{'community.new'|trans}}</h1>
+
+    {{ include('community/_form.html.twig') }}
+
+    <a class="btn btn-default" href="{{ path('community_index') }}">{{'back'|trans}}</a>
+{% endblock %}

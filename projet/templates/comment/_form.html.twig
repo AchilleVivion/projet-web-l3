@@ -1,0 +1,7 @@
+<form method="post" action="{{ path('comment_new') }}" class="form-group">
+    <input type="hidden" name="event" value="{{event.id}}">
+    <input type="hidden" name="user" value="{{app.user.id}}">
+    <textarea class="form-control" row="5" col="2" name="comment" placeholder="Comment..."></textarea>
+    <br>
+    <button class="btn">{{'comment.add'|trans}}</button>
+</form>

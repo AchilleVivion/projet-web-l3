@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Communities{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-4">
+            <h1>{{'community.orga'|trans}}</h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{'name'|trans}}</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for community in communitiesOrga %}
+                    <tr>
+                        <td>{{ community.name }}</td>
+                        <td>
+                            <a href="{{ path('community_show', {'id': community.id}) }}"><span class="glyphicon glyphicon-eye-open"></a>
+                            <a href="{{ path('community_edit', {'id': community.id}) }}"><span class="glyphicon glyphicon-edit"></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">{{'no.record'|trans}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-3">
+            <h1>{{'community.follow'|trans}}</h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{'name'|trans}}</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for community in communitiesFollow %}
+                    <tr>
+                        <td>{{ community.name }}</td>
+                        <td>
+                            <a href="{{ path('community_show', {'id': community.id}) }}"><span class="glyphicon glyphicon-eye-open"></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">{{'no.record'|trans}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-5">
+            <h1>{{'community.public'|trans}}<br><br></h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{'name'|trans}}</th>
+                        <th>Description</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for community in communitiesPublic %}
+                    <tr>
+                        <td>{{ community.name }}</td>
+                        <td>{{ community.description }}</td>
+                        <td>
+                            <a href="{{ path('community_show', {'id': community.id}) }}"><span class="glyphicon glyphicon-eye-open"></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">{{'no.record'|trans}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a class="btn btn-default" href="{{ path('community_new') }}">{{'community.new'|trans}}</a>
+{% endblock %}
