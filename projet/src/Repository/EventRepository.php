@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Event;
 use App\Entity\User;
+use App\Entity\Community;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Security\LoginAuthenticator;
@@ -26,6 +27,19 @@ class EventRepository extends ServiceEntityRepository
     /**
     * @return Event[] Returns an array of Event objects
     */
+    public function findByCommunity(Community $commu)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere(':commu MEMBER OF e.communities')
+            ->setParameter('commu', $commu)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+    * @return Event[] Returns an array of Event objects
+    */
     public function findUpcomingEventUser(User $value, $filtres)
     {
         $ret = $this->createQueryBuilder('e')
@@ -36,7 +50,6 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('min', $filtres['minPrice']);
         }
         if($filtres['maxPrice'] != 0){
-            var_dump('ok');
             $ret->andWhere('e.prix <= :max')
             ->setParameter('max', $filtres['maxPrice']);
         }
@@ -63,7 +76,6 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('min', $filtres['minPrice']);
         }
         if($filtres['maxPrice'] != 0){
-            var_dump('ok');
             $ret->andWhere('e.prix <= :max')
             ->setParameter('max', $filtres['maxPrice']);
         }

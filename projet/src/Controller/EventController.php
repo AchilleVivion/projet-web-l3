@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Repository\CommentRepository;
 use App\Repository\CommunityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,10 +119,13 @@ class EventController extends AbstractController
     /**
      * @Route("/{id}", name="event_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Event $event): Response
+    public function delete(CommentRepository $commentRepo, Request $request, Event $event): Response
     {
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            foreach ($commentRepo->findByEvent($event) as $comment){
+                $entityManager->remove($comment);
+            }
             $entityManager->remove($event);
             $entityManager->flush();
         }

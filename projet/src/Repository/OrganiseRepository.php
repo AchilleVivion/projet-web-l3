@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Organise;
+use App\Entity\Community;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,22 +20,18 @@ class OrganiseRepository extends ServiceEntityRepository
         parent::__construct($registry, Organise::class);
     }
 
-    // /**
-    //  * @return Organise[] Returns an array of Organise objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return Organise[] Returns an array of Organise objects
+    */
+    public function findByCommunity(Community $commu)
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('o.community = :commu')
+            ->setParameter('commu', $commu)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Organise

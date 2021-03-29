@@ -8,6 +8,9 @@ use App\Entity\Organise;
 use App\Form\CommunityType;
 use App\Repository\CommunityRepository;
 use App\Repository\FollowRepository;
+use App\Repository\OrganiseRepository;
+use App\Repository\EventRepository;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,6 +48,7 @@ class CommunityController extends AbstractController
             $organise = new Organise();
             $organise->setTheuser($this->getUser());
             $community->addOrganise($organise);
+            $community->setPublic(true);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($community);
             $entityManager->flush();
@@ -114,10 +118,22 @@ class CommunityController extends AbstractController
     /**
      * @Route("/{id}", name="community_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Community $community): Response
+    public function delete(CommentRepository $commentRepo, EventRepository $eventRepo, FollowRepository $followRepo, OrganiseRepository $orgaRepo, Request $request, Community $community): Response
     {
         if ($this->isCsrfTokenValid('delete'.$community->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            foreach ($eventRepo->findByCommunity($community) as $event){
+                foreach ($commentRepo->findByEvent($event) as $comment){
+                    $entityManager->remove($comment);
+                }
+                $entityManager->remove($event);
+            }
+            foreach ($followRepo->findByCommunity($community) as $follow){
+                $entityManager->remove($follow);
+            }
+            foreach ($orgaRepo->findByCommunity($community) as $orga){
+                $entityManager->remove($orga);
+            }
             $entityManager->remove($community);
             $entityManager->flush();
         }
