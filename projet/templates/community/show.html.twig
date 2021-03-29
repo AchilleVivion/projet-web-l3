@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Community{% endblock %}
+
+{% block body %}
+    <h1 style="float: left;">{{ community.name }}</h1>
+    <div style="float: right;">
+        <form action="{{ path('community_follow') }}" method="POST">
+            <input type="hidden" name="community" value="{{community.id}}" />
+        {% if follows %}
+            <input type="submit" class="btn btn-primary disabled" value="{{'follow'|trans}}" disabled/>
+        {% else %}
+            <input type="submit" class="btn btn-primary" value="{{'follow'|trans}}" />
+        {% endif %}
+        </form>
+    </div> 
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Description</th>
+                <td>{{ community.description }}</td>
+            </tr>
+            <tr>
+                <th>{{'public'|trans}}</th>
+                <td>{{ community.public ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>{{'event'|trans}}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{'title'|trans}}</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>{{'price'|trans}}</th>                      
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in community.events %}
+            <tr>
+                <td>{{ event.titre }}</td>
+                <td>{{ event.type }}</td>
+                <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+                <td>{{ event.prix }}</td>    
+                <td>
+                    <a href="{{ path('event_show', {'id': event.id}) }}"><span class="glyphicon glyphicon-eye-open"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">{{'no.record'|trans}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-default" href="{{ path('community_index') }}">{{'back'|trans}}</a>
+{% endblock %}

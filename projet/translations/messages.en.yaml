@@ -1,0 +1,37 @@
+stage.offir: __stage.offir
+hello: Hello
+event.see: 'See events'
+community.see: 'See communities'
+community.create: 'Create a community'
+comment.add: 'Add comment'
+delete: Delete
+comment.edit: 'Edit comment'
+back: Back
+price: Price
+no.comments: 'No comments'
+event.edit: 'Edit event'
+event.new: 'Create a new event'
+event.participate: 'Events you are participating in'
+title: Title
+no.record: 'No records for now'
+event.public: 'Public events'
+follow: Follow
+public: Public
+community.edit: 'Edit community'
+community.new: 'Create new community'
+community.orga: 'Communities you organise'
+name: Name
+community.follow: 'Communities you follow'
+community.public: 'Public communities'
+signin: 'Sign in'
+password: Password
+signup: 'Sign up'
+community: Community
+event: Event
+participe: Participate
+filters: Filters
+price.min: 'Min. price'
+price.max: 'Max. price'
+search: Search
+register: Register
+agree: Agree terms
